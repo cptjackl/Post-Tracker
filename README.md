@@ -1,0 +1,1 @@
+A social media management app that tracks time remaining until the user can post on specific subreddits
