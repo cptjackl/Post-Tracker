@@ -1,11 +1,11 @@
 //Elements
 const $trackers = document.getElementById("trackers")
+const $newTrackerForm = document.getElementById("addSub")
+
 const $newPostForm = document.getElementById("newPostForm")
 const $postDisplay = document.getElementById("postDisplay")
 const $postSelectionForm = document.getElementById("postSelection")
 const $postSelection = document.getElementById("postSelect")
-
-
 
 //Arrays
 const trackers = [
@@ -44,16 +44,17 @@ const posts = [
     }
 ]
 
-
 //Functions
 function displayTrackers(){
     $trackers.innerHTML = trackers.reduce((html,track)=>html + 
-    `<div id="tracker1" class=" p-3 border-1 bg-light border border-1 mt-3 d-flex justify-content-between">
-        <div>
-            <h3> <a href='${track.link}'>${track.sub}</a> </h3>
-            <p>Time remaining:${track.time}hrs </p>
-        </div>
-        <input type="button" value="reset">
+    `<div class="card mb-3">
+            <div class="card-header">
+                <h3 class="card-title"> <a href='${track.link}'>${track.sub}</a> </h3>
+            </div>
+            <div class="card-body">
+                <p class="card-text">Time remaining:${track.time}hrs </p>
+                <input type="button" value="reset" class="btn btn-primary">
+            </div>
     </div>`,'')
 }
 
@@ -61,10 +62,16 @@ function displayPost(selPost){
     post = posts.find((story)=>story.title == selPost)
 
     $postDisplay.innerHTML = `
+        <div>    
             <h3>${post.title}</h3>
-            <img src=${post.image}>
-            <p>${post.body}</p>`
-
+        </div>
+        <div>
+            <img class="img-fluid" src=${post.image}>
+        </div>
+        <div>
+            <p>${post.body}</p>
+        </div>`
+        
         $newPostForm.classList.add('d-none')
         $postDisplay.classList.remove('d-none')
 }
@@ -83,8 +90,15 @@ $newPostForm.addEventListener('submit',function(e){
     fillPostList()
 })
 
-$postSelectionForm.addEventListener('click',function(e){
-   selPost = $postSelection.value
+$newTrackerForm.addEventListener('submit',function(e){
+    e.preventDefault()
+    let answers = e.target.elements
+    trackers.push({sub:answers[0].value,link:answers[1].value,time:answers[2].value})
+    displayTrackers()
+})
+
+$postSelectionForm.addEventListener('change',function(e){
+    selPost = $postSelection.value
     
     if(selPost == 'newPost'){
         
